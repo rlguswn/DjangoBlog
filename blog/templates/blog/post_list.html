@@ -7,6 +7,7 @@
             <tr>
                 <td>제목</td>
                 <td>내용</td>
+                <td>작성자</td>
             </tr>
         </thead>
         {% for post in posts %}
@@ -18,5 +19,6 @@
             </tr>
         </tbody>
         {% endfor %}
+        <a href="{% url 'blog:write' %}">글쓰기</a>
     </table>
 {% endblock %}

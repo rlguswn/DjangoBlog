@@ -6,4 +6,5 @@
         {{ form.as_p }}
         <input type="submit" value="수정">
     </form>
+    <a href="{% url 'blog:detail' pk=post.pk %}">취소</a>
 {% endblock %}

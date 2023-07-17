@@ -2,6 +2,9 @@
 
 {% block content %}
     <h2>제목: {{ post.title }}</h2>
+    <a href="{% url 'blog:list' %}">글 목록</a>
+    <a href="{% url 'blog:update' pk=post.pk %}">수정</a>
+    <a href="{% url 'blog:delete' pk=post.pk %}">삭제</a>
     <p>내용: {{ post.content }}</p>
     <p>작성자: {{ post.writer }}</p>
     <p>작성일: {{ post.created_at }}</p>
