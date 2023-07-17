@@ -1,6 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <!--  카테고리(category)  -->
+    <h3>카테고리</h3>
+    {% if categories %}
+        {% for category in categories %}
+            <a href="">{{ category }}</a>
+        {% endfor %}
+    {% else %}
+        <a href="">미분류</a>
+    {% endif %}
+    <a href="{% url 'blog:cg-update' pk=post.pk %}">카테고리 관리</a>
+    <!--  /카테고리(category)  -->
+
+    <hr>
+
+    <!--  게시글(post)  -->
     <h2>제목: {{ post.title }}</h2>
     <a href="{% url 'blog:list' %}">글 목록</a>
     <a href="{% url 'blog:update' pk=post.pk %}">수정</a>
@@ -8,8 +23,11 @@
     <p>내용: {{ post.content }}</p>
     <p>작성자: {{ post.writer }}</p>
     <p>작성일: {{ post.created_at }}</p>
+    <!--  /게시글(post)  -->
 
     <hr>
+
+    <!--  댓글(comment)  -->
     <h3>댓글</h3>
     <form action="{% url 'blog:cm-write' pk=post.pk %}" method="post">
         {% csrf_token %}
@@ -25,7 +43,7 @@
                     {% else %}
                         {{ comment.content }} / 익명
                     {% endif %}
-                    <form action="{% url 'blog:cm-delete' pk=comment.pk %}">
+                    <form action="{% url 'blog:cm-delete' pk=comment.pk %}" method="post">
                         {% csrf_token %}
                         <input type="submit" value="X">
                     </form>
@@ -33,4 +51,5 @@
             {% endfor %}
         </ul>
     {% endif %}
+    <!--  /댓글(comment)  -->
 {% endblock %}

@@ -2,6 +2,7 @@
 
 {% block content %}
     <p>블로그 목록 첫 화면입니다.</p>
+    {% if posts %}
     <table>
         <thead>
             <tr>
@@ -19,6 +20,9 @@
             </tr>
         </tbody>
         {% endfor %}
-        <a href="{% url 'blog:write' %}">글쓰기</a>
     </table>
+    {% else %}
+        <p>게시글이 없습니다</p>
+    {% endif %}
+    <a href="{% url 'blog:write' %}">글쓰기</a>
 {% endblock %}

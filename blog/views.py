@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import PostForm, CommentForm
-from .models import Post, Comment
+from .forms import PostForm, CommentForm, CategoryForm
+from .models import Post, Comment, Category
 
 
 # Create your views here.
@@ -18,32 +18,34 @@ class PostDetail(View):
     def get(self, request, pk):
         post = Post.objects.get(pk=pk)
 
-        comments = post.comment_set.all()
         comment_form = CommentForm()
-
+        category_form = CategoryForm()
         context = {
             'post': post,
-            'comments': comments,
-            'comment_form': comment_form
+            'comments': post.comment_set.all(),
+            'categories': post.category_set.all(),
+            'comment_form': comment_form,
+            'category_form': category_form
         }
         return render(request, 'blog/post_detail.html', context)
 
 
 class PostWrite(View):
     def get(self, request):
-        form = PostForm()
+        post_form = PostForm()
         context = {
-            'form': form
+            'form': post_form
         }
         return render(request, 'blog/post_form.html', context)
     def post(self, request):
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save()
+        post_form = PostForm(request.POST)
+
+        if post_form.is_valid():
+            post = post_form.save()
             return redirect('blog:list')
-        form.add_error(None, '폼이 유효하지 않습니다')
+        post_form.add_error(None, '폼이 유효하지 않습니다')
         context = {
-            'form': form
+            'form': post_form
         }
         return render(request, 'blog/post_form.html')
 
@@ -51,24 +53,25 @@ class PostWrite(View):
 class PostUpdate(View):
     def get(self, request, pk):
         post = Post.objects.get(pk=pk)
-        form = PostForm(initial={'title':post.title, 'content':post.content})
+        post_form = PostForm(initial={'title':post.title, 'content':post.content})
         context = {
-            'form': form,
+            'form': post_form,
             'post': post
         }
         return render(request, 'blog/post_edit.html', context)
 
     def post(self, request, pk):
         post = Post.objects.get(pk=pk)
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post.title = form.cleaned_data['title']
-            post.content = form.cleaned_data['content']
+        post_form = PostForm(request.POST)
+
+        if post_form.is_valid():
+            post.title = post_form.cleaned_data['title']
+            post.content = post_form.cleaned_data['content']
             post.save()
             return redirect('blog:detail', pk=pk)
-        form.add_error(None, '폼이 유효하지 않습니다')
+        post_form.add_error(None, '폼이 유효하지 않습니다')
         context = {
-            'form': form
+            'form': post_form
         }
         return render(request, 'blog/post_form.html', context)
 
@@ -82,24 +85,65 @@ class PostDelete(View):
 
 class CommentWrite(View):
     def post(self, request, pk):
-        form = CommentForm(request.POST)
+        comment_form = CommentForm(request.POST)
         post = Post.objects.get(pk=pk)
-        if form.is_valid():
-            content = form.cleaned_data['content']
-            comment = Comment.objects.create(post=post, content=content)
+
+        if comment_form.is_valid():
+            content = comment_form.cleaned_data['content']
+            comment_obj = Comment.objects.create(post=post, content=content)
             return redirect('blog:detail', pk=pk)
 
+        category_form = CategoryForm()
         context = {
             'post': post,
             'comments': post.comment_set.all(),
-            'comment_form': form
+            'categories': post.category_set.all(),
+            'comment_form': comment_form,
+            'category_form': category_form
         }
         return render(request, 'blog/post_detail.html', context)
 
 
 class CommentDelete(View):
-    def get(self, request, pk):
+    def post(self, request, pk):
         comment = Comment.objects.get(pk=pk)
         post_id = comment.post.id
         comment.delete()
         return redirect('blog:detail', pk=post_id)
+
+
+class CategoryUpdate(View):
+    def get(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        category_form = CategoryForm()
+        context = {
+            'post': post,
+            'form': category_form,
+            'categories': post.category_set.all()
+        }
+        return render(request, 'blog/category_edit.html', context)
+
+    def post(self, request, pk):
+        category_form = CategoryForm(request.POST)
+        post = Post.objects.get(pk=pk)
+
+        if category_form.is_valid():
+            category = category_form.cleaned_data['category']
+            category_obj = Category.objects.create(category=category)
+            category_obj.post.add(post)
+            return redirect('blog:cg-update', pk=pk)
+
+        context = {
+            'post': post,
+            'categories': post.category_set.all(),
+            'category_form': category_form
+        }
+        return render(request, 'blog/category_edit.html', context)
+
+
+class CategoryDelete(View):
+    def post(self, request, pk, category_pk):
+        post = Post.objects.get(pk=pk)
+        category = Category.objects.get(pk=category_pk)
+        category.post.remove(post)
+        return redirect('blog:cg-update', pk=post.pk)

@@ -22,4 +22,10 @@ urlpatterns = [
     path('detail/<int:pk>/comment/write/', views.CommentWrite.as_view(), name='cm-write'),
     # 댓글 삭제
     path('detail/comment/<int:pk>/delete/', views.CommentDelete.as_view(), name='cm-delete'),
+
+    # 카테고리 기능 url
+    # 카테고리 작성
+    path('detail/<int:pk>/category/update/', views.CategoryUpdate.as_view(), name='cg-update'),
+    # 카테고리 삭제
+    path('detail/<int:pk>/category/<int:category_pk>/delete/', views.CategoryDelete.as_view(), name='cg-delete'),
 ]

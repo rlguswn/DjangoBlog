@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if form.errors %}
+    {% include 'form_error.html' %}
+{% else %}
+    {% if categories %}
+        {% for category in categories %}
+            <a href="">{{ category }}</a>
+            <form action="{% url 'blog:cg-delete' pk=post.pk category_pk=category.pk %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="X">
+            </form>
+        {% endfor %}
+    {% else %}
+        <a href="">미분류</a>
+    {% endif %}
+    <form action="{% url 'blog:cg-update' pk=post.pk %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="카테고리 추가">
+    </form>
+    <a href="{% url 'blog:detail' pk=post.pk %}">게시글로 돌아가기</a>
+{% endif %}
+{% endblock %}
