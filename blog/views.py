@@ -11,3 +11,12 @@ class PostList(View):
             'posts': posts,
         }
         return render(request, 'blog/post_list.html', context)
+
+
+class PostDetail(View):
+    def get(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        context = {
+            'post': post
+        }
+        return render(request, 'blog/post_detail.html', context)

@@ -12,8 +12,8 @@
         {% for post in posts %}
         <tbody>
             <tr>
-                <td><a href="">{{ post.title }}</a></td>
-                <td><a href="">{{ post.content }}</a></td>
+                <td><a href="{% url 'blog:detail' pk=post.pk %}">{{ post.title }}</a></td>
+                <td><a href="{% url 'blog:detail' pk=post.pk %}">{{ post.content }}</a></td>
                 <td><a href="">{{ post.writer }}</a></td>
             </tr>
         </tbody>
