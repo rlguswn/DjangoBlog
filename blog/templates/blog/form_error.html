@@ -1,0 +1,8 @@
+<!-- form error 출력 -->
+
+<ul>
+    {% for error in form.errors.value %}
+        <li>{{ error }}</li>
+    {% endfor %}
+</ul>
+{{ form }}

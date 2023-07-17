@@ -8,4 +8,29 @@
     <p>내용: {{ post.content }}</p>
     <p>작성자: {{ post.writer }}</p>
     <p>작성일: {{ post.created_at }}</p>
+
+    <hr>
+    <h3>댓글</h3>
+    <form action="{% url 'blog:cm-write' pk=post.pk %}" method="post">
+        {% csrf_token %}
+        {{ comment_form.content }}
+        <input type="submit" value="댓글 작성">
+    </form>
+    {% if comments %}
+        <ul>
+            {% for comment in comments %}
+                <li>
+                    {% if comment.writer %}
+                        {{ comment.content }} / {{ comment.writer }}
+                    {% else %}
+                        {{ comment.content }} / 익명
+                    {% endif %}
+                    <form action="{% url 'blog:cm-delete' pk=comment.pk %}">
+                        {% csrf_token %}
+                        <input type="submit" value="X">
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}
