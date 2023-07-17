@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>블로그 목록 첫 화면입니다.</p>
+    <table>
+        <thead>
+            <tr>
+                <td>제목</td>
+                <td>내용</td>
+            </tr>
+        </thead>
+        {% for post in posts %}
+        <tbody>
+            <tr>
+                <td><a href="">{{ post.title }}</a></td>
+                <td><a href="">{{ post.content }}</a></td>
+                <td><a href="">{{ post.writer }}</a></td>
+            </tr>
+        </tbody>
+    </table>
+    {% endfor %}
+{% endblock %}
