@@ -55,3 +55,10 @@ class PostUpdate(View):
             post.content = form.cleaned_data['content']
             post.save()
             return redirect('blog:detail', pk=pk)
+
+
+class PostDelete(View):
+    def get(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        post.delete()
+        return redirect('blog:list')

@@ -12,7 +12,7 @@ urlpatterns = [
     # 글 작성 /blog/write/
     path('write/', views.PostWrite.as_view(), name='write'),
     # 글 수정 /blog/detail/update/<int:pk>/
-    path('detail/update/<int:pk>/', views.PostUpdate.as_view(), name='update')
+    path('detail/update/<int:pk>/', views.PostUpdate.as_view(), name='update'),
     # 글 삭제 /blog/detail/delete/<int:pk>/
-    # path('detail/delete/<int:pk>/', views.PostDelete.as_view(), name='delete')
+    path('detail/delete/<int:pk>/', views.PostDelete.as_view(), name='delete'),
 ]
