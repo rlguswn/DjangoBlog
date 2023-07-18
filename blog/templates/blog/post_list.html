@@ -1,35 +1,82 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-    <p>블로그 목록 첫 화면입니다.</p>
-    {% if posts %}
-    <table>
-        <thead>
-            <tr>
-                <td>제목</td>
-                <td>내용</td>
-                <td>작성자</td>
-            </tr>
-        </thead>
-        {% for post in posts %}
-        <tbody>
-            <tr>
-                <td><a href="{% url 'blog:detail' pk=post.pk %}">{{ post.title }}</a></td>
-                <td><a href="{% url 'blog:detail' pk=post.pk %}">{{ post.content }}</a></td>
-                <td>
+<header class="masthead" style="background-image: url({% static 'img/home-bg.jpg' %})">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Clean Blog</h1>
+                    <span class="subheading">A Blog Theme by Start Bootstrap</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content-->
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            {% if posts %}
+            {% for post in posts %}
+            <div class="post-preview card px-4">
+                <a href="{% url 'blog:detail' pk=post.pk %}">
+                    <h2 class="post-title">{{ post.title }}</h2>
+                    <h3 class="post-subtitle">{{ post.content|truncatechars:30 }}</h3>
+                </a>
+                <p class="post-meta">
+                    Posted by
                     {% if post.writer %}
                         <a href="">{{ post.writer }}</a>
                     {% else %}
-                        <p>익명</p>
+                        <a href="">익명</a>
                     {% endif %}
-                </td>
-            </tr>
-        </tbody>
-        {% endfor %}
-    </table>
-    {% else %}
-        <p>게시글이 없습니다</p>
-    {% endif %}
-    <hr>
-    <a href="{% url 'blog:write' %}">글쓰기</a>
+                    on {{ post.created_at }}
+                </p>
+            </div>
+            {% endfor %}
+            {% else %}
+                <h2>작성된 게시글이 없습니다.</h2>
+            {% endif %}
+
+            <div class="d-flex justify-content-end mb-4">
+                <a class="btn btn-primary text-uppercase mt-4" href="{% url 'blog:write' %}">post</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
+<!--    <p>블로그 목록 첫 화면입니다.</p>-->
+<!--    {% if posts %}-->
+<!--    <table>-->
+<!--        <thead>-->
+<!--            <tr>-->
+<!--                <td>제목</td>-->
+<!--                <td>내용</td>-->
+<!--                <td>작성자</td>-->
+<!--            </tr>-->
+<!--        </thead>-->
+<!--        {% for post in posts %}-->
+<!--        <tbody>-->
+<!--            <tr>-->
+<!--                <td><a href="{% url 'blog:detail' pk=post.pk %}">{{ post.title }}</a></td>-->
+<!--                <td><a href="{% url 'blog:detail' pk=post.pk %}">{{ post.content }}</a></td>-->
+<!--                <td>-->
+<!--                    {% if post.writer %}-->
+<!--                        <a href="">{{ post.writer }}</a>-->
+<!--                    {% else %}-->
+<!--                        <p>익명</p>-->
+<!--                    {% endif %}-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        </tbody>-->
+<!--        {% endfor %}-->
+<!--    </table>-->
+<!--    {% else %}-->
+<!--        <p>게시글이 없습니다</p>-->
+<!--    {% endif %}-->
+<!--    <hr>-->
+<!--    <a href="{% url 'blog:write' %}">글쓰기</a>-->

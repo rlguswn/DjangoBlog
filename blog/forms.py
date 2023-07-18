@@ -12,6 +12,9 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'class': 'form-range', 'placeholder': '댓글을 작성해주세요.'})
+        }
 
 
 class CategoryForm(forms.ModelForm):

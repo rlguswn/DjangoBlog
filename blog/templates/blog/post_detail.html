@@ -1,55 +1,130 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-    <!--  카테고리(category)  -->
-    <h3>카테고리</h3>
-    {% if categories %}
-        {% for category in categories %}
-            <a href="">{{ category }}</a>
-        {% endfor %}
-    {% else %}
-        <a href="">미분류</a>
-    {% endif %}
-    <a href="{% url 'blog:cg-update' pk=post.pk %}">카테고리 관리</a>
-    <!--  /카테고리(category)  -->
+    <header class="masthead" style="background-image: url('{% static 'img/post-bg.jpg' %}')">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="post-heading">
+                        <h1>{{ post.title }}</h1>
+                        <span class="meta">
+                            Posted by
+                            {% if post.writer %}
+                                <a href="">{{ post.writer }}</a>
+                            {% else %}
+                                <p>익명</p>
+                            {% endif %}
+                            on {{ post.created_at }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <hr>
-
-    <!--  게시글(post)  -->
-    <h2>제목: {{ post.title }}</h2>
-    <a href="{% url 'blog:list' %}">글 목록</a>
-    <a href="{% url 'blog:update' pk=post.pk %}">수정</a>
-    <a href="{% url 'blog:delete' pk=post.pk %}">삭제</a>
-    <p>내용: {{ post.content }}</p>
-    <p>작성자: {{ post.writer }}</p>
-    <p>작성일: {{ post.created_at }}</p>
-    <!--  /게시글(post)  -->
-
-    <hr>
-
-    <!--  댓글(comment)  -->
-    <h3>댓글</h3>
-    <form action="{% url 'blog:cm-write' pk=post.pk %}" method="post">
-        {% csrf_token %}
-        {{ comment_form.content }}
-        <input type="submit" value="댓글 작성">
-    </form>
-    {% if comments %}
-        <ul>
-            {% for comment in comments %}
-                <li>
-                    {% if comment.writer %}
-                        {{ comment.content }} / {{ comment.writer }}
-                    {% else %}
-                        {{ comment.content }} / 익명
-                    {% endif %}
-                    <form action="{% url 'blog:cm-delete' pk=comment.pk %}" method="post">
-                        {% csrf_token %}
-                        <input type="submit" value="X">
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    <!--  /댓글(comment)  -->
+    <main class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7 text-break ">
+                    {{ post.content }}
+                </div>
+            </div>
+        </div>
+        <div class="container px-4 px-lg-5 mt-2">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7 py-sm-2 text-end">
+                    <a class="btn btn-primary text-uppercase mt-4" href="{% url 'blog:update' pk=post.pk %}">수정</a>
+                    <a class="btn btn-primary text-uppercase mt-4" href="{% url 'blog:delete' pk=post.pk %}">삭제</a>
+                    <a class="btn btn-primary text-uppercase mt-4" href="{% url 'blog:list' %}">목록</a>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="my-5">
+                        <form class="card px-4 py-4" action="{% url 'blog:cm-write' pk=post.pk %}" method="post">
+                            <div class="form-floating">
+                                {% csrf_token %}
+                                {{ comment_form.content }}
+                                <div class ="text-end">
+                                    <input class="btn btn-primary text-uppercase mt-2" type="submit" value="댓글 작성">
+                                </div>
+                            </div>
+                        </form>
+                        {% if comments %}
+                            {% for comment in comments %}
+                                <form class="card mt-2 px-4 py-4"  action="{% url 'blog:cm-delete' pk=comment.pk %}" method="post">
+                                    {% csrf_token %}
+                                        {% if comment.writer %}
+                                            {{ comment.content }} / {{ comment.writer }}
+                                        {% else %}
+                                            {{ comment.content }} / 익명
+                                        {% endif %}
+                                    <div class ="text-end">
+                                        <input class="btn btn-primary text-uppercase mt-1"  type="submit" value="삭제">
+                                    </div>
+                                </form>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}
+
+
+<!--    &lt;!&ndash;  카테고리(category)  &ndash;&gt;-->
+<!--    <h3>카테고리</h3>-->
+<!--    {% if categories %}-->
+<!--        {% for category in categories %}-->
+<!--            <a href="">{{ category }}</a>-->
+<!--        {% endfor %}-->
+<!--    {% else %}-->
+<!--        <a href="">미분류</a>-->
+<!--    {% endif %}-->
+<!--    <a href="{% url 'blog:cg-update' pk=post.pk %}">카테고리 관리</a>-->
+<!--    &lt;!&ndash;  /카테고리(category)  &ndash;&gt;-->
+
+<!--    <hr>-->
+
+<!--    &lt;!&ndash;  게시글(post)  &ndash;&gt;-->
+<!--    <h2>제목: {{ post.title }}</h2>-->
+<!--    <a href="{% url 'blog:list' %}">글 목록</a>-->
+<!--    <a href="{% url 'blog:update' pk=post.pk %}">수정</a>-->
+<!--    <a href="{% url 'blog:delete' pk=post.pk %}">삭제</a>-->
+<!--    <p>내용: {{ post.content }}</p>-->
+<!--    <p>작성자: {{ post.writer }}</p>-->
+<!--    <p>작성일: {{ post.created_at }}</p>-->
+<!--    &lt;!&ndash;  /게시글(post)  &ndash;&gt;-->
+
+<!--    <hr>-->
+
+<!--    &lt;!&ndash;  댓글(comment)  &ndash;&gt;-->
+<!--    <h3>댓글</h3>-->
+<!--    <form action="{% url 'blog:cm-write' pk=post.pk %}" method="post">-->
+<!--        {% csrf_token %}-->
+<!--        {{ comment_form.content }}-->
+<!--        <input type="submit" value="댓글 작성">-->
+<!--    </form>-->
+<!--    {% if comments %}-->
+<!--        <ul>-->
+<!--            {% for comment in comments %}-->
+<!--                <li>-->
+<!--                    {% if comment.writer %}-->
+<!--                        {{ comment.content }} / {{ comment.writer }}-->
+<!--                    {% else %}-->
+<!--                        {{ comment.content }} / 익명-->
+<!--                    {% endif %}-->
+<!--                    <form action="{% url 'blog:cm-delete' pk=comment.pk %}" method="post">-->
+<!--                        {% csrf_token %}-->
+<!--                        <input type="submit" value="X">-->
+<!--                    </form>-->
+<!--                </li>-->
+<!--            {% endfor %}-->
+<!--        </ul>-->
+<!--    {% endif %}-->
+<!--    &lt;!&ndash;  /댓글(comment)  &ndash;&gt;-->
