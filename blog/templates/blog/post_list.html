@@ -16,7 +16,13 @@
             <tr>
                 <td><a href="{% url 'blog:detail' pk=post.pk %}">{{ post.title }}</a></td>
                 <td><a href="{% url 'blog:detail' pk=post.pk %}">{{ post.content }}</a></td>
-                <td><a href="">{{ post.writer }}</a></td>
+                <td>
+                    {% if post.writer %}
+                        <a href="">{{ post.writer }}</a>
+                    {% else %}
+                        <p>익명</p>
+                    {% endif %}
+                </td>
             </tr>
         </tbody>
         {% endfor %}
@@ -24,5 +30,6 @@
     {% else %}
         <p>게시글이 없습니다</p>
     {% endif %}
+    <hr>
     <a href="{% url 'blog:write' %}">글쓰기</a>
 {% endblock %}

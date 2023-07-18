@@ -7,6 +7,7 @@
     <form action="{% url 'blog:write' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit">
+        <input type="submit" value="작성완료">
     </form>
+    <a href="{% url 'blog:list' %}">취소</a>
 {% endblock %}

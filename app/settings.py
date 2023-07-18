@@ -14,17 +14,28 @@ from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
 import json
 
+# Auth user
+AUTH_USER_MODEL = 'user.User'
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRETS_PATH = os.path.join(BASE_DIR, 'secrets.json')
 secrets = json.loads(open(SECRETS_PATH).read())
 
 
+def get_secret(setting):
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = f'{setting} error'
+        raise ImproperlyConfigured(error_msg)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-oyashr7-b^55)9cpbcns96agc_a3zj_s=gzx$08674opuvcw9p'
+SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

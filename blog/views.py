@@ -69,6 +69,7 @@ class PostUpdate(View):
             post.content = post_form.cleaned_data['content']
             post.save()
             return redirect('blog:detail', pk=pk)
+
         post_form.add_error(None, '폼이 유효하지 않습니다')
         context = {
             'form': post_form
