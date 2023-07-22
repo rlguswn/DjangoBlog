@@ -27,4 +27,6 @@ urlpatterns = [
     path('detail/<int:pk>/category/update/', views.CategoryUpdate.as_view(), name='cg-update'),
     # 카테고리 삭제
     path('detail/<int:pk>/category/<int:category_pk>/delete/', views.CategoryDelete.as_view(), name='cg-delete'),
+    # 카테고리 검색
+    path('detail/category/search/', views.CategorySearch.as_view(), name='cg-search'),
 ]

@@ -26,6 +26,16 @@
     <main class="mb-4">
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div>
+                    <h3>카테고리</h3>
+                    {% if categories %}
+                        {% for category in categories %}
+                            <a href="">{{ category }}</a>
+                        {% endfor %}
+                    {% else %}
+                        <a href="">미분류</a>
+                    {% endif %}
+                </div>
                 <div class="col-md-10 col-lg-8 col-xl-7 text-break ">
                     {{ post.content }}
                 </div>
@@ -34,6 +44,7 @@
         <div class="container px-4 px-lg-5 mt-2">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7 py-sm-2 text-end">
+                    <a class="btn btn-primary text-uppercase mt-4" href="{% url 'blog:cg-update' pk=post.pk %}">카테고리 관리</a>
                     <a class="btn btn-primary text-uppercase mt-4" href="{% url 'blog:update' pk=post.pk %}">수정</a>
                     <a class="btn btn-primary text-uppercase mt-4" href="{% url 'blog:delete' pk=post.pk %}">삭제</a>
                     <a class="btn btn-primary text-uppercase mt-4" href="{% url 'blog:list' %}">목록</a>

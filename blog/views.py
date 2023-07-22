@@ -8,8 +8,10 @@ from .models import Post, Comment, Category
 class PostList(View):
     def get(self, request):
         posts = Post.objects.all()
+        category_form = CategoryForm()
         context = {
-            'posts': posts
+            'posts': posts,
+            'category_form': category_form
         }
         return render(request, 'blog/post_list.html', context)
 
@@ -148,3 +150,16 @@ class CategoryDelete(View):
         category = Category.objects.get(pk=category_pk)
         category.post.remove(post)
         return redirect('blog:cg-update', pk=post.pk)
+
+
+class CategorySearch(View):
+    def get(self, request):
+        category_form = CategoryForm(request.GET)
+        if category_form.is_valid():
+            category = category_form.cleaned_data['category']
+            posts = Post.objects.filter(category__category=category)
+        context = {
+            'posts': posts,
+            'category_form': category_form
+        }
+        return render(request, 'blog/post_list.html', context)

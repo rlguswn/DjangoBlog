@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if form.errors %}
-    {% include 'form_error.html' %}
-{% else %}
+    <p>카테고리 수정</p>
+    {% if form.errors %}
+        {% include 'form_error.html' %}
+    {% else %}
     {% if categories %}
         {% for category in categories %}
             <a href="">{{ category }}</a>
@@ -13,7 +14,7 @@
             </form>
         {% endfor %}
     {% else %}
-        <a href="">미분류</a>
+        <p>지정된 카테고리가 없습니다.</p>
     {% endif %}
     <form action="{% url 'blog:cg-update' pk=post.pk %}" method="post">
         {% csrf_token %}
