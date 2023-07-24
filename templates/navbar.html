@@ -1,24 +1,26 @@
 <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
     <div class="container px-4 px-lg-5">
         <a class="navbar-brand" href="{% url 'blog:list' %}">Blog</a>
-        <form action="{% url 'blog:cg-search' %}" method="get">
-            {{ category_form.as_p }}
-            <input type="submit" value="검색">
-        </form>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             메뉴
             <i class="fas fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto py-4 py-lg-0">
+            <ul class="navbar-nav ms-auto py-4 py-lg-0 align-items-center">
+                <li class="nav-item nav-link px-lg-3 py-3 py-lg-4">
+                    <form class="flex flex-row" action="{% url 'blog:cg-search' %}" method="get">
+                        {{ search_form.category }}
+                        <input type="submit" value="검색">
+                    </form>
+                </li>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'blog:list' %}">Home</a></li>
                 {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="">Profile</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'user:logout' %}">Logout</a></li>
                 {% else %}
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'user:login' %}">Login</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'user:register' %}">Signin</a></li>
                 {% endif %}
-                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html">About</a></li>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="post.html">Sample Post</a></li>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">Contact</a></li>
             </ul>
