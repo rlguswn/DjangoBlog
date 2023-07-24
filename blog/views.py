@@ -19,7 +19,6 @@ class PostList(View):
 class PostDetail(View):
     def get(self, request, pk):
         post = Post.objects.get(pk=pk)
-
         comment_form = CommentForm()
         category_form = CategoryForm()
         context = {
@@ -39,12 +38,16 @@ class PostWrite(View):
             'form': post_form
         }
         return render(request, 'blog/post_form.html', context)
+
     def post(self, request):
         post_form = PostForm(request.POST)
 
         if post_form.is_valid():
-            post = post_form.save()
+            post = post_form.save(commit=False)
+            post.writer = request.user
+            post.save()
             return redirect('blog:list')
+
         post_form.add_error(None, '폼이 유효하지 않습니다')
         context = {
             'form': post_form
@@ -155,6 +158,7 @@ class CategoryDelete(View):
 class CategorySearch(View):
     def get(self, request):
         category_form = CategoryForm(request.GET)
+
         if category_form.is_valid():
             category = category_form.cleaned_data['category']
             posts = Post.objects.filter(category__category=category)
