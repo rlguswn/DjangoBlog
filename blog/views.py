@@ -7,7 +7,7 @@ from .models import Post, Comment, Category
 # Create your views here.
 class PostList(View):
     def get(self, request):
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by('-created_at')
         category_form = CategoryForm()
         context = {
             'posts': posts,
@@ -181,7 +181,7 @@ class CategorySearch(View):
 
         if category_form.is_valid():
             category = category_form.cleaned_data['category']
-            posts = Post.objects.filter(category__category=category)
+            posts = Post.objects.filter(category__category=category).order_by('-created_at')
         context = {
             'posts': posts,
             'category_form': category_form,

@@ -28,7 +28,7 @@
                         </a>
                         <p class="post-meta">
                             Posted by
-                            <a href="">{{ post.writer }}</a>
+                            <a href="{% url 'user:p-detail' user=post.writer %}">{{ post.writer }}</a>
                             on {{ post.created_at }}
                         </p>
                     </div>

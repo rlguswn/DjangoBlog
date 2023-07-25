@@ -10,7 +10,7 @@
                         <h1>{{ post.title }}</h1>
                         <span class="meta">
                             Posted by
-                            <a href="">{{ post.writer }}</a>
+                            <a href="{% url 'user:p-detail' user=post.writer %}">{{ post.writer }}</a>
                             on {{ post.created_at }}
                         </span>
                     </div>

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <header class="masthead" style="background-image: url({% static 'img/home-bg.jpg' %})">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="page-heading">
+                        <h1>{{ user.email }} 님의 프로필</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <h2>프로필 수정</h2>
+                    {% if form.errors %}
+                        {% include 'form_error.html' %}
+                    {% else %}
+                    <form action="{% url 'user:p-update' user=request.user %}" method="post">
+                        {% csrf_token %}
+                        {{ profile_form.as_p }}
+                        <div class="col-md-10 col-lg-8 col-xl-7 py-sm-2 text-end">
+                            <input class="btn btn-primary text-uppercase mt-4" type="submit" value="수정">
+                            <a class="btn btn-primary text-uppercase mt-4" href="{% url 'user:p-detail' user=request.user %}">취소</a>
+                        </div>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </main>
+{% endblock %}

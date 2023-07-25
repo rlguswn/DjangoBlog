@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <header class="masthead" style="background-image: url({% static 'img/home-bg.jpg' %})">
+        <div class="container position-relative px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="page-heading">
+                        <h1>{{ user.email }} 님의 프로필</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <h2>프로필 수정</h2>
+                    <p>사진:
+                        {% if user.image %}
+                            {{ user.image }}
+                        {% endif %}
+                    </p>
+                    <p>이메일: {{ user.email }}</p>
+                    <p>이름:
+                        {% if user.name %}
+                            {{ user.name }}
+                        {% endif %}
+                    </p>
+                    <p>나이:
+                        {% if user.age %}
+                            {{ user.age }}
+                        {% endif %}
+                    </p>
+                    <p>계정 생성일: {{ user.date_joined }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="container px-4 px-lg-5 mt-2">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7 py-sm-2 text-end">
+                    {% if user.email == request.user.email %}
+                        <a class="btn btn-primary text-uppercase mt-4" href="{% url 'user:p-update' user=request.user %}">수정</a>
+                    {% endif %}
+                    <a class="btn btn-primary text-uppercase mt-4" href="{% url 'blog:list' %}">목록</a>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
